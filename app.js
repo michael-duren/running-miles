@@ -53,6 +53,11 @@ let hoverIdx = -1;
 
 /* ---------------- load ---------------- */
 
+// These must not depend on the CSV resolving.
+initTheme();
+initOfflineBanner();
+initServiceWorker();
+
 fetch('master_running_sheet.csv', { cache: 'no-cache' })
   .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.text(); })
   .then(text => {
@@ -84,7 +89,6 @@ fetch('master_running_sheet.csv', { cache: 'no-cache' })
       };
     }).filter(Boolean);
 
-    initTheme();
     initFilter();
     renderStats();
     applyScope();
@@ -372,6 +376,34 @@ function renderTable() {
       <td class="notes">${escapeHTML(r.notes)}</td>`;
     tbody.appendChild(tr);
   }
+}
+
+/* ---------------- pwa ---------------- */
+
+function initOfflineBanner() {
+  const banner = document.getElementById('offline-banner');
+  const sync = () => { banner.hidden = navigator.onLine; };
+  addEventListener('online', sync);
+  addEventListener('offline', sync);
+  sync();
+}
+
+function initServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  // file:// has no SW and no fetch(); skip rather than throw.
+  if (location.protocol !== 'https:' && location.hostname !== 'localhost') return;
+
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  // A new worker taking over means the shell changed underneath us. Reload once —
+  // but not on the very first install, where there was no controller to replace.
+  let reloading = false;
+  const hadController = Boolean(navigator.serviceWorker.controller);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
 }
 
 /* ---------------- theme ---------------- */

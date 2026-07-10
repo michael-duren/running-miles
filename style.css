@@ -74,7 +74,36 @@ body {
   color: var(--text-primary);
   max-width: 1180px;
   margin: 0 auto;
-  padding: 32px 20px 56px;
+  /* installed on iOS the status bar overlays the page — inset for it */
+  padding:
+    calc(32px + env(safe-area-inset-top, 0px))
+    calc(20px + env(safe-area-inset-right, 0px))
+    calc(56px + env(safe-area-inset-bottom, 0px))
+    calc(20px + env(safe-area-inset-left, 0px));
+}
+
+/* A cached plan must never pass silently as a live one. */
+.offline-banner {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 18px;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  font-size: 12.5px;
+}
+.offline-banner[hidden] { display: none; }
+/* status colour never carries the meaning alone — it sits beside the label */
+.offline-banner::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fab219;
 }
 
 /* ---------- header ---------- */
@@ -376,7 +405,13 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 1
   .tiles { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) {
-  .viz-root { padding: 22px 12px 40px; }
+  .viz-root {
+    padding:
+      calc(22px + env(safe-area-inset-top, 0px))
+      calc(12px + env(safe-area-inset-right, 0px))
+      calc(40px + env(safe-area-inset-bottom, 0px))
+      calc(12px + env(safe-area-inset-left, 0px));
+  }
   .tiles { grid-template-columns: 1fr 1fr; }
   .hero-value { font-size: 44px; }
   .filter-row { flex-direction: column; align-items: flex-start; gap: 8px; }
