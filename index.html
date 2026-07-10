@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training Plan — Marathon &amp; Zumbro 50</title>
+<meta name="description" content="Weekly mileage plan from base through the Oct 2026 marathon to the Zumbro 50.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>🏃</text></svg>">
+</head>
+<body>
+<div class="viz-root">
+
+  <header class="page-head">
+    <div>
+      <h1>Training Plan</h1>
+      <p class="sub">Base &rarr; first marathon (Oct 2026) &rarr; Zumbro 50 (Apr 2027)</p>
+    </div>
+    <button id="theme-toggle" class="ghost-btn" type="button" aria-live="polite">
+      <span data-theme-label>Dark</span>
+    </button>
+  </header>
+
+  <!-- Hero + stat tiles -->
+  <section class="stats" aria-label="Plan summary">
+    <div class="hero card">
+      <p class="label">Days until race day</p>
+      <p class="hero-value" id="hero-days">—</p>
+      <p class="hero-sub" id="hero-race">&nbsp;</p>
+    </div>
+    <div class="tiles">
+      <div class="tile card">
+        <p class="label">This week</p>
+        <p class="value" id="stat-current">—</p>
+        <p class="tile-sub" id="stat-current-sub">&nbsp;</p>
+      </div>
+      <div class="tile card">
+        <p class="label">Peak week</p>
+        <p class="value" id="stat-peak">—</p>
+        <p class="tile-sub" id="stat-peak-sub">&nbsp;</p>
+      </div>
+      <div class="tile card">
+        <p class="label">Marathon goal</p>
+        <p class="value">3:25</p>
+        <p class="tile-sub">7:49 / mi &middot; PR attempt</p>
+      </div>
+      <div class="tile card">
+        <p class="label">Weeks planned</p>
+        <p class="value" id="stat-weeks">—</p>
+        <p class="tile-sub" id="stat-weeks-sub">&nbsp;</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- One filter row, scoping everything below it -->
+  <div class="filter-row" role="group" aria-label="Filter weeks">
+    <div class="segmented" id="scope-filter">
+      <button type="button" class="seg" data-scope="all" aria-pressed="true">All weeks</button>
+      <button type="button" class="seg" data-scope="plan" aria-pressed="false">Plan only</button>
+      <button type="button" class="seg" data-scope="historical" aria-pressed="false">Historical</button>
+    </div>
+    <p class="filter-note" id="filter-count">&nbsp;</p>
+  </div>
+
+  <section class="card chart-card">
+    <div class="chart-head">
+      <h2>Weekly mileage</h2>
+      <p class="sub">Columns are total weekly miles. The line is the long run, on the same scale.</p>
+    </div>
+
+    <ul class="legend" id="legend">
+      <li><span class="key key-bar" style="background:var(--elapsed)"></span>Elapsed</li>
+      <li><span class="key key-bar" style="background:var(--upcoming)"></span>Upcoming</li>
+      <li><span class="key key-bar" style="background:var(--race)"></span>Race week</li>
+      <li><span class="key key-line" style="background:var(--longrun)"></span>Long run</li>
+    </ul>
+
+    <div class="chart-wrap">
+      <div id="chart" class="chart" tabindex="0" role="img"
+           aria-label="Column chart of weekly mileage over the training plan, with the long run overlaid as a line. The full data is in the table below."></div>
+      <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
+    </div>
+    <p class="hint">Hover or focus the chart and use &larr; &rarr; to step through weeks.</p>
+  </section>
+
+  <section class="card table-card">
+    <div class="chart-head">
+      <h2>Every week</h2>
+      <p class="sub">The same data, unabridged — the table is the source of truth.</p>
+    </div>
+    <div class="table-scroll">
+      <table id="table">
+        <caption class="visually-hidden">Weekly training plan: week start, week number, miles, long run, type, phase and notes.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Week of</th>
+            <th scope="col">Wk</th>
+            <th scope="col" class="num">Miles</th>
+            <th scope="col">Long run</th>
+            <th scope="col">Type</th>
+            <th scope="col">Phase</th>
+            <th scope="col">Notes</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="foot">
+    Rendered directly from <code>master_running_sheet.csv</code>. Edit the CSV, push, and this page follows.
+  </p>
+
+  <noscript><p class="foot">This page renders the CSV with JavaScript. View <code>master_running_sheet.csv</code> directly instead.</p></noscript>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
